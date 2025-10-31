@@ -12,7 +12,7 @@ def generate_launch_description():
         ExecuteProcess(
             cmd=[
                 'ros2', 'bag', 'record',
-                '/cmd_vel',
+                '/cmd_vel_ctrl',
                 '/robot1/pose',
                 '/imu/data_raw',
                 '/imu/mag'

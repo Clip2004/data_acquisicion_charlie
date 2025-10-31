@@ -5,7 +5,7 @@ from geometry_msgs.msg import Pose, TransformStamped
 from tf_transformations import quaternion_from_euler
 from tf2_ros import TransformBroadcaster
 from sensor_msgs.msg import LaserScan
-
+import numpy as np
 
 class PoseToTFNode(Node):
     def __init__(self):
@@ -64,7 +64,7 @@ class PoseToTFNode(Node):
         t2.transform.translation.x = 0.2
         t2.transform.translation.y = 0.0
         t2.transform.translation.z = 0.15
-        q = quaternion_from_euler(0.0, 0.0, 0.0)
+        q = quaternion_from_euler(0.0, 0.0, np.pi)
         t2.transform.rotation.x, t2.transform.rotation.y, t2.transform.rotation.z, t2.transform.rotation.w = q
         self.tf_broadcaster.sendTransform(t2)
 
