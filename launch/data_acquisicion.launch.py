@@ -9,14 +9,14 @@ def generate_launch_description():
             executable='pose_broadcaster_node',
             name='pose_broadcaster_node'
         ),
-        ExecuteProcess(
-            cmd=[
-                'ros2', 'bag', 'record',
-                '/cmd_vel_ctrl',
-                '/robot1/pose',
-                '/imu/data_raw',
-                '/imu/mag'
-            ],
-            output='screen'
-        )
+        # ExecuteProcess(
+        #     cmd=[
+        #         'ros2', 'bag', 'record',
+        #         '/cmd_vel_ctrl',
+        #         '/robot1/pose',
+        #         '/imu/data_raw',
+        #         '/imu/mag'
+        #     ],
+        #     output='screen'
+        # )
     ])

@@ -39,9 +39,9 @@ class PoseToTFNode(Node):
 
     def broadcast_tf(self):
         if self.latest_pose is None or self.latest_scan is None:
-            return  # Esperar a tener ambos datos
+            return
 
-        # Usar el tiempo actual del sistema
+        # === Tiempo actual ===
         now = self.get_clock().now().to_msg()
         msg = self.latest_pose
 
@@ -69,12 +69,11 @@ class PoseToTFNode(Node):
         self.tf_broadcaster.sendTransform(t2)
 
         # --- Publicar scan sincronizado ---
+        scan_copy = LaserScan()
         scan_copy = self.latest_scan
-        scan_copy.header.stamp = now
+        scan_copy.header.stamp = now        # ⬅️ MISMO tiempo que TF
         scan_copy.header.frame_id = "laser_frame"
         self.scan_pub.publish(scan_copy)
-
-        self.get_logger().info(f"TF emitida -> odom2→base_link2→laser_frame (t={now.sec}.{now.nanosec})")
 
 
 def main(args=None):
