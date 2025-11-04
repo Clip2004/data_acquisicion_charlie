@@ -56,6 +56,20 @@ class PoseToTFNode(Node):
         t1.transform.rotation = msg.orientation
         self.tf_broadcaster.sendTransform(t1)
 
+        # --- base_link2 -> base_footprint (frame para SLAM) ---
+        t_footprint = TransformStamped()
+        t_footprint.header.stamp = now
+        t_footprint.header.frame_id = 'base_link2'
+        t_footprint.child_frame_id = 'base_footprint'
+        t_footprint.transform.translation.x = 0.0
+        t_footprint.transform.translation.y = 0.0
+        t_footprint.transform.translation.z = -msg.position.z  # Proyectar al suelo (z=0 en odom2)
+        t_footprint.transform.rotation.x = 0.0
+        t_footprint.transform.rotation.y = 0.0
+        t_footprint.transform.rotation.z = 0.0
+        t_footprint.transform.rotation.w = 1.0  # Sin rotación
+        self.tf_broadcaster.sendTransform(t_footprint)
+
         # --- base_link2 -> laser_frame ---
         t2 = TransformStamped()
         t2.header.stamp = now
