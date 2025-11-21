@@ -23,8 +23,8 @@ class PoseToTFNode(Node):
         self.latest_pose = None
         self.latest_scan = None
 
-        # Timer (10 Hz)
-        self.timer_period = 1.0 / 10.0
+        # Timer (20 Hz)
+        self.timer_period = 1.0 / 20.0
         self.timer = self.create_timer(self.timer_period, self.broadcast_tf)
 
         self.get_logger().info("✅ Nodo PoseToTF inicializado correctamente.")
@@ -69,7 +69,7 @@ class PoseToTFNode(Node):
         t_footprint.transform.rotation.z = 0.0
         t_footprint.transform.rotation.w = 1.0  # Sin rotación
         self.tf_broadcaster.sendTransform(t_footprint)
-
+        
         # --- base_link2 -> laser_frame ---
         t2 = TransformStamped()
         t2.header.stamp = now
@@ -81,7 +81,15 @@ class PoseToTFNode(Node):
         q = quaternion_from_euler(0.0, 0.0, np.pi)
         t2.transform.rotation.x, t2.transform.rotation.y, t2.transform.rotation.z, t2.transform.rotation.w = q
         self.tf_broadcaster.sendTransform(t2)
-
+        t3 = TransformStamped()
+        t3.header.stamp = now
+        t3.header.frame_id = "base_link2"
+        t3.child_frame_id = "imu_link"
+        t3.transform.translation.x = -0.02
+        t3.transform.translation.y = 0.0
+        t3.transform.translation.z = 0.02
+        t3.transform.rotation = quaternion_from_euler(0.0,0.0,0.0)
+        self.tf_broadcaster.sendTransform(t3)
         # --- Publicar scan sincronizado ---
         scan_copy = LaserScan()
         scan_copy = self.latest_scan
